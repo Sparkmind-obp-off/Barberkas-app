@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "barberkas-app",
+  "compatibility_date": "2024-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": "./dist",
+
+  // APP_ENV=production → ADR-001: auth wajib fail-closed di production.
+  // Local dev override via .dev.vars (APP_ENV=development).
+  "vars": {
+    "APP_ENV": "production"
+  },
+
+  // D1: pakai database EXISTING barberkas-app-production (jangan create baru).
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "barberkas-app-production",
+      "database_id": "bf1cb0d4-9ae2-416f-943f-cdae2f4261fb"
+    }
+  ]
+}
