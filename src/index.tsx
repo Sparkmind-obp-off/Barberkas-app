@@ -13,6 +13,7 @@ import { requestId } from './middleware/request-id'
 import { health } from './routes/health'
 import { services } from './routes/services'
 import { reports, sales } from './routes/sales'
+import { cashier } from './routes/cashier'
 import { fail } from './lib/response'
 
 const app = new Hono<AppContext>()
@@ -27,6 +28,9 @@ app.route('/health', health)
 app.route('/api/v1/services', services)
 app.route('/api/v1/sales', sales)
 app.route('/api/v1/reports', reports)
+
+// Mobile-first server-rendered cashier UI
+app.route('/kasir', cashier)
 
 // Normalized 404 / error envelopes — no internals leaked (E-042 §2.2)
 app.notFound((c) => fail(c, 404, 'NOT_FOUND', 'Resource not found'))
