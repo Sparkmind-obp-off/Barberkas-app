@@ -4,7 +4,7 @@
 
 - **Name**: barberkas-app
 - **Current goal**: single-user cashier MVP for daily dogfooding at a barbershop.
-- **Current phase**: Kasir MVP implemented locally; production migration and deployment are pending owner approval.
+- **Current phase**: Kasir MVP is live in production; owner acceptance testing from a real phone remains pending.
 - **Scope**: one user, one device, no login, integer IDR amounts, Jakarta business date.
 - **Paused work**: R1b Clerk authentication and multi-tenant SaaS architecture remain parked until after dogfood validation.
 
@@ -21,12 +21,15 @@
 - Create, rename, reprice, and deactivate services.
 - Normalized `ok()` / `fail()` API envelopes with request IDs.
 - Local D1 migration verified from an empty database.
+- Production D1 migration `0002_cashier_mvp.sql` applied and verified.
+- Kasir MVP deployed to Cloudflare Pages and smoke-tested.
 
 ## URLs
 
 - **Production base**: https://barberkas-app.pages.dev
 - **Production health**: https://barberkas-app.pages.dev/health
-- **Production cashier**: https://barberkas-app.pages.dev/kasir — not deployed yet
+- **Production cashier**: https://barberkas-app.pages.dev/kasir
+- **Production service management**: https://barberkas-app.pages.dev/kasir/layanan
 - **GitHub**: https://github.com/Sparkmind-obp-off/Barberkas-app
 
 ## Functional Routes
@@ -89,24 +92,21 @@ The sandbox preview listens on port `3000`. Build before starting or restarting 
 
 ## Not Yet Implemented
 
-- Production application of migrations 0001 and 0002.
-- Production deployment of the Kasir UI and APIs.
 - Owner acceptance test from a real phone.
 - Authentication, tenant isolation, booking, customer database, payment gateway, WhatsApp integration, subscription, AI staff, multi-outlet, and separate capster entities. These are explicitly outside this MVP.
 - Full automated test suite and CI pipeline.
 
 ## Recommended Next Steps
 
-1. Obtain owner approval to apply migrations 0001 and 0002 to production D1.
-2. Choose the Cloudflare deployment path and deploy the verified build.
-3. Smoke-test the production API and both Kasir pages.
-4. Have the owner complete one real transaction flow from a phone.
-5. Record dogfood feedback before expanding product scope.
+1. Have the owner complete one real transaction flow from a phone.
+2. Confirm adding, editing, and deactivating services works on the owner's device.
+3. Record dogfood feedback before expanding product scope.
 
 ## Deployment
 
 - **Platform**: Cloudflare Pages / Workers with D1.
 - **Stack**: Hono 4, strict TypeScript, Hono JSX, Vite, Wrangler.
-- **Production status**: existing health endpoint active; Kasir MVP not deployed.
-- **Local verification**: typecheck, lint, build, migrations, API lifecycle, static assets, and browser console checks passed.
+- **Production status**: active; `/health`, `/kasir`, and `/kasir/layanan` return HTTP 200.
+- **Deployment path**: BYOK Cloudflare Pages project `barberkas-app`.
+- **Verification**: typecheck, lint, build, local migration/API lifecycle/static assets/browser console checks, remote D1 migration, and production route smoke tests passed.
 - **Last updated**: 2026-07-22

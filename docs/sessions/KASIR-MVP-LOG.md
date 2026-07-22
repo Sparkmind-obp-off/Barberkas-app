@@ -6,3 +6,10 @@ Selesai: BOOT/RESUME memverifikasi `main` sinkron dan Kasir belum ada; baseline 
 Belum: migration 0001/0002 belum diaplikasikan ke production; build Kasir belum dideploy; owner belum mencoba alur transaksi langsung dari HP.
 
 Next: minta persetujuan owner untuk production migration dan pilihan jalur Cloudflare deploy, lalu migrate → deploy → smoke test production → owner acceptance test dari HP.
+
+## 2026-07-22 sesi 2
+Selesai: BYOK Cloudflare diverifikasi aktif; migration `0002_cashier_mvp.sql` diaplikasikan ke D1 production dan tabel `services`, `sales`, `sale_items` terverifikasi; commit `b00eb96` dibuild dan dideploy ke Cloudflare Pages project `barberkas-app` (deployment `b43af9b5`); smoke test canonical production `/health`, `/kasir`, dan `/kasir/layanan` semuanya HTTP 200.
+
+Belum: owner belum mencoba alur transaksi langsung dari HP.
+
+Next: owner membuka `https://barberkas-app.pages.dev/kasir`, menambah layanan bila perlu, lalu mencoba satu transaksi nyata dari HP dan melaporkan feedback dogfood.
