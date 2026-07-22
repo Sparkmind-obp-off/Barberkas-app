@@ -11,6 +11,7 @@ import { Hono } from 'hono'
 import type { AppContext } from './types'
 import { requestId } from './middleware/request-id'
 import { health } from './routes/health'
+import { services } from './routes/services'
 import { fail } from './lib/response'
 
 const app = new Hono<AppContext>()
@@ -20,6 +21,9 @@ app.use('*', requestId)
 
 // Public health check (no auth by design)
 app.route('/health', health)
+
+// Single-user cashier MVP API (no auth by design for dogfood phase)
+app.route('/api/v1/services', services)
 
 // Normalized 404 / error envelopes — no internals leaked (E-042 §2.2)
 app.notFound((c) => fail(c, 404, 'NOT_FOUND', 'Resource not found'))
