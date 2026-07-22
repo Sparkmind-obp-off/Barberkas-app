@@ -63,8 +63,19 @@ function readOptionalText(value: unknown, maxLength: number): string | null | un
   return text || null
 }
 
+function todayInJakarta(): string {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Jakarta',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).formatToParts(new Date())
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]))
+  return `${values.year}-${values.month}-${values.day}`
+}
+
 function readDate(value: string | undefined): string | null {
-  if (!value) return new Date().toISOString().slice(0, 10)
+  if (!value) return todayInJakarta()
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null
 
   const date = new Date(`${value}T00:00:00.000Z`)
@@ -151,7 +162,7 @@ sales.get('/', async (c) => {
   const saleResult = await c.env.DB.prepare(
     `SELECT id, capster_name, note, status, total_idr, created_at
      FROM sales
-     WHERE substr(created_at, 1, 10) = ?
+     WHERE date(datetime(created_at, '+7 hours')) = ?
      ORDER BY created_at DESC`
   ).bind(date).all<SaleRow>()
 
@@ -200,7 +211,7 @@ reports.get('/daily', async (c) => {
     `SELECT COALESCE(SUM(total_idr), 0) AS total_idr,
             COUNT(*) AS transaction_count
      FROM sales
-     WHERE status = 'completed' AND substr(created_at, 1, 10) = ?`
+     WHERE status = 'completed' AND date(datetime(created_at, '+7 hours')) = ?`
   ).bind(date).first<DailySummaryRow>()
 
   const byService = await c.env.DB.prepare(
@@ -209,7 +220,8 @@ reports.get('/daily', async (c) => {
             SUM(sale_items.price_idr) AS subtotal_idr
      FROM sale_items
      INNER JOIN sales ON sales.id = sale_items.sale_id
-     WHERE sales.status = 'completed' AND substr(sales.created_at, 1, 10) = ?
+     WHERE sales.status = 'completed'
+       AND date(datetime(sales.created_at, '+7 hours')) = ?
      GROUP BY sale_items.service_name
      ORDER BY subtotal_idr DESC, name COLLATE NOCASE ASC`
   ).bind(date).all<ServiceSummaryRow>()
