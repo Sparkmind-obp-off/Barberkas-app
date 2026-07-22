@@ -12,6 +12,7 @@ import type { AppContext } from './types'
 import { requestId } from './middleware/request-id'
 import { health } from './routes/health'
 import { services } from './routes/services'
+import { reports, sales } from './routes/sales'
 import { fail } from './lib/response'
 
 const app = new Hono<AppContext>()
@@ -24,6 +25,8 @@ app.route('/health', health)
 
 // Single-user cashier MVP API (no auth by design for dogfood phase)
 app.route('/api/v1/services', services)
+app.route('/api/v1/sales', sales)
+app.route('/api/v1/reports', reports)
 
 // Normalized 404 / error envelopes — no internals leaked (E-042 §2.2)
 app.notFound((c) => fail(c, 404, 'NOT_FOUND', 'Resource not found'))
