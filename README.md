@@ -12,6 +12,7 @@
 
 - Mobile-first server-rendered cashier page at `/kasir`.
 - Add one or more active services to a transaction.
+- Immediate mobile feedback after every service tap: a short toast with item count and a highlighted service card.
 - Optional capster name and transaction note.
 - Server-side transaction total calculation.
 - Service name and price snapshots on every sale item.
@@ -86,9 +87,10 @@ npm run lint
 npm run build
 pm2 start ecosystem.config.cjs
 curl http://localhost:3000/health
+npm run test:cashier-feedback
 ```
 
-The sandbox preview listens on port `3000`. Build before starting or restarting Wrangler Pages dev.
+The sandbox preview listens on port `3000`. Build before starting or restarting Wrangler Pages dev. The cashier feedback regression uses Playwright with Pixel 7 touch emulation and verifies the card highlight, toast copy, cart count, and enabled submit button.
 
 ## Not Yet Implemented
 
@@ -108,5 +110,6 @@ The sandbox preview listens on port `3000`. Build before starting or restarting 
 - **Stack**: Hono 4, strict TypeScript, Hono JSX, Vite, Wrangler.
 - **Production status**: active; `/health`, `/kasir`, and `/kasir/layanan` return HTTP 200.
 - **Deployment path**: BYOK Cloudflare Pages project `barberkas-app`.
-- **Verification**: typecheck, lint, build, local migration/API lifecycle/static assets/browser console checks, remote D1 migration, and production route smoke tests passed.
-- **Last updated**: 2026-07-22
+- **Latest deployment**: `297539d8` with cashier tap feedback.
+- **Verification**: typecheck, lint, build, local migration/API lifecycle/static assets/browser console checks, remote D1 migration, production route smoke tests, and real touch automation against both canonical and deployment URLs passed.
+- **Last updated**: 2026-07-23

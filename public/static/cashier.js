@@ -36,7 +36,7 @@
       .replaceAll("'", '&#039;')
   }
 
-  function showToast(message, isError = false) {
+  function showToast(message, isError = false, duration = 3200) {
     const toast = document.querySelector('#toast')
     if (!toast) return
 
@@ -45,7 +45,7 @@
     toast.className = `toast show${isError ? ' error' : ''}`
     toastTimer = setTimeout(() => {
       toast.className = 'toast'
-    }, 3200)
+    }, duration)
   }
 
   async function api(path, options = {}) {
@@ -95,11 +95,23 @@
 
       picker.querySelectorAll('[data-service-index]').forEach((button) => {
         button.addEventListener('click', () => {
-          cart.push(services[Number(button.dataset.serviceIndex)])
+          const service = services[Number(button.dataset.serviceIndex)]
+          cart.push(service)
           renderCart()
+          showAddFeedback(button, service)
           if (navigator.vibrate) navigator.vibrate(20)
         })
       })
+    }
+
+    function showAddFeedback(button, service) {
+      button.classList.remove('just-added')
+      void button.offsetWidth
+      button.classList.add('just-added')
+      button.addEventListener('animationend', () => {
+        button.classList.remove('just-added')
+      }, { once: true })
+      showToast(`${service.name} ditambahkan · ${cart.length} item`, false, 1800)
     }
 
     function renderCart() {

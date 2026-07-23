@@ -13,3 +13,12 @@ Selesai: BYOK Cloudflare diverifikasi aktif; migration `0002_cashier_mvp.sql` di
 Belum: owner belum mencoba alur transaksi langsung dari HP.
 
 Next: owner membuka `https://barberkas-app.pages.dev/kasir`, menambah layanan bila perlu, lalu mencoba satu transaksi nyata dari HP dan melaporkan feedback dogfood.
+
+## 2026-07-23 sesi 3
+Selesai: feedback UX tap-to-add ditambahkan tanpa mengubah logic cart/API/DB. Setiap tap layanan sekarang menampilkan toast `"{layanan} ditambahkan · {jumlah} item"` selama 1,8 detik dan highlight pada kartu selama 700 ms. Regression check Playwright baru memakai emulasi touch Pixel 7 untuk memverifikasi highlight, toast, perubahan ke `1 item`, dan tombol **Catat Transaksi** aktif. Typecheck, lint, build, serta browser regression lokal lulus.
+
+Deploy: build dideploy via BYOK ke Cloudflare Pages project `barberkas-app` (deployment `297539d8`). Smoke test canonical production `/health`, `/kasir`, dan `/kasir/layanan` semuanya HTTP 200. Browser touch regression lulus terhadap `https://barberkas-app.pages.dev` dan URL deployment, tanpa membuat transaksi atau mengubah data production.
+
+Belum: owner perlu mengulang uji dari HP fisik dan mengonfirmasi feedback sekarang langsung terlihat.
+
+Next: owner mengetuk layanan di `/kasir`, memastikan toast/highlight terlihat, lalu menyelesaikan satu transaksi nyata untuk acceptance test.

@@ -223,6 +223,28 @@ h2 {
   background: #ddf3f0;
 }
 
+.service-button.just-added {
+  animation: service-added 700ms ease-out;
+}
+
+@keyframes service-added {
+  0% {
+    border-color: var(--brand);
+    background: #ccece8;
+    box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.34);
+  }
+  55% {
+    border-color: var(--brand);
+    background: #ddf3f0;
+    box-shadow: 0 0 0 0.35rem rgba(15, 118, 110, 0.12);
+  }
+  100% {
+    border-color: #b8d8d4;
+    background: #f3fbfa;
+    box-shadow: 0 0 0 0 rgba(15, 118, 110, 0);
+  }
+}
+
 .service-button strong,
 .service-button span {
   display: block;
